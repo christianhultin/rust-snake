@@ -62,12 +62,10 @@ impl event::EventHandler for GameState {
         _keymod: KeyMods,
         _repeat: bool,
     ) {
-        match keycode {
-            KeyCode::Up => self.snake.change_direction(Direction::Up),
-            KeyCode::Right => self.snake.change_direction(Direction::Right),
-            KeyCode::Down => self.snake.change_direction(Direction::Down),
-            KeyCode::Left => self.snake.change_direction(Direction::Left),
-            _ => (),
+        if let Some(dir) = Direction::from_keycode(keycode) {
+            if dir != self.snake.direction && dir.inverse() != self.snake.direction {
+                self.snake.direction = dir;
+            }
         }
     }
 }

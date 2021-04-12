@@ -6,7 +6,7 @@ use std::collections::LinkedList;
 pub struct Snake {
     head: GridPosition,
     body: LinkedList<GridPosition>,
-    direction: Direction,
+    pub direction: Direction,
 }
 
 impl Snake {
@@ -16,10 +16,6 @@ impl Snake {
             body: LinkedList::new(),
             direction: Direction::Right,
         }
-    }
-
-    pub fn change_direction(&mut self, direction: Direction) {
-        self.direction = direction;
     }
 
     pub fn update(&mut self) {
