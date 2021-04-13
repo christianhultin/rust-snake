@@ -1,7 +1,7 @@
 use crate::constants::*;
 use crate::direction::*;
-use ggez;
 use ggez::graphics;
+use ggez::{self, Context, GameResult};
 use oorandom::Rand32;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -47,5 +47,26 @@ impl GridPosition {
             Direction::Down => (pos.x, pos.y + 1).into(),
             Direction::Left => (pos.x - 1, pos.y).into(),
         }
+    }
+
+    pub fn is_wall(&self) -> bool {
+        if self.x > GRID_SIZE.0 || self.x < 0 {
+            return true;
+        }
+        if self.y > GRID_SIZE.1 || self.y < 0 {
+            return true;
+        }
+        false
+    }
+
+    pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
+        let rectangle = graphics::Mesh::new_rectangle(
+            ctx,
+            graphics::DrawMode::fill(),
+            self.clone().into(),
+            [0.3, 0.3, 0.0, 1.0].into(),
+        )?;
+        graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
+        Ok(())
     }
 }
