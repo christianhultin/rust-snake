@@ -1,6 +1,6 @@
 use crate::constants::*;
 use crate::direction::*;
-use ggez::graphics;
+use ggez::graphics::{self, Color};
 use ggez::{self, Context, GameResult};
 use oorandom::Rand32;
 
@@ -59,12 +59,12 @@ impl GridPosition {
         false
     }
 
-    pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
+    pub fn draw(&self, ctx: &mut Context, color: Color) -> GameResult<()> {
         let rectangle = graphics::Mesh::new_rectangle(
             ctx,
             graphics::DrawMode::fill(),
             self.clone().into(),
-            [0.3, 0.3, 0.0, 1.0].into(),
+            color,
         )?;
         graphics::draw(ctx, &rectangle, (ggez::mint::Point2 { x: 0.0, y: 0.0 },))?;
         Ok(())

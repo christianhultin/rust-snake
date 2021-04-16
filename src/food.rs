@@ -21,6 +21,6 @@ impl Food {
     }
 
     pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
-        self.pos.draw(ctx)
+        self.pos.draw(ctx, [1.0, 0.0, 0.0, 1.0].into())
     }
 }

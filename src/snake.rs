@@ -1,5 +1,6 @@
 use crate::direction::Direction;
 use crate::grid::GridPosition;
+use ggez::graphics::Color;
 use ggez::{Context, GameResult};
 
 pub struct Snake {
@@ -24,21 +25,29 @@ impl Snake {
         if self.head.is_wall() {
             return true;
         }
+        for seg in self.body.iter() {
+            if seg.clone() == self.head {
+                return true;
+            }
+        }
         false
     }
 
-    pub fn update(&mut self) {
+    pub fn update(&mut self, should_grow: bool) {
         let new_head_position = GridPosition::new_from_move(self.head, self.direction);
         self.body.insert(0, self.head);
-        self.body.pop();
         self.head = new_head_position;
+        if !should_grow {
+            self.body.pop();
+        }
     }
 
     pub fn draw(&self, ctx: &mut Context) -> GameResult<()> {
+        let color: Color = [1.0, 1.0, 1.0, 1.0].into();
         for seg in self.body.iter() {
-            seg.draw(ctx)?;
+            seg.draw(ctx, color)?;
         }
-        self.head.draw(ctx)?;
+        self.head.draw(ctx, color)?;
         Ok(())
     }
 }

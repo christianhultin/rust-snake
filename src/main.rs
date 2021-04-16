@@ -45,22 +45,25 @@ impl event::EventHandler for GameState {
             return Ok(());
         }
         if !self.gameover {
-            self.snake.update();
             if self.snake.is_dead() {
                 self.gameover = true;
+                println!("Game over! Score: {}", self.score);
+                return Ok(());
             }
+            if self.snake.head == self.food.pos {
+                self.score = self.score + 1;
+                self.food.new_position();
+                self.snake.update(true);
+            } else {
+                self.snake.update(false);
+            }
+            self.last_update = Instant::now();
         }
-        if self.snake.head == self.food.pos {
-            self.score = self.score + 1;
-            println!("Score: {}", self.score);
-            self.food.new_position();
-        }
-        self.last_update = Instant::now();
         Ok(())
     }
 
     fn draw(&mut self, ctx: &mut Context) -> GameResult {
-        graphics::clear(ctx, [0.0, 1.0, 0.0, 1.0].into());
+        graphics::clear(ctx, [0.0, 0.0, 0.0, 1.0].into());
         self.snake.draw(ctx)?;
         self.food.draw(ctx)?;
         graphics::present(ctx)?;
