@@ -1,18 +1,18 @@
 mod constants;
 mod direction;
-mod food;
 mod grid;
-mod snake;
+mod snaky_stuff;
 
-use crate::snake::Snake;
 use constants::{GRID_SIZE, MILLIS_PER_UPDATE, SCREEN_SIZE};
 use direction::Direction;
-use food::Food;
 use ggez::{
     event::{self, KeyCode, KeyMods},
     graphics, Context, GameResult,
 };
+use grid::GridPosition;
 use oorandom::Rand32;
+use snaky_stuff::food::Food;
+use snaky_stuff::snake::Snake;
 use std::time::{Duration, Instant};
 
 struct GameState {
@@ -30,7 +30,7 @@ impl GameState {
         let rng = Rand32::new(u64::from_ne_bytes(seed));
 
         GameState {
-            snake: Snake::new((GRID_SIZE.0 / 2, GRID_SIZE.1 / 2).into()),
+            snake: Snake::new(GridPosition::new(GRID_SIZE.0 / 2, GRID_SIZE.1 / 2)),
             gameover: false,
             food: Food::new(rng),
             last_update: Instant::now(),
